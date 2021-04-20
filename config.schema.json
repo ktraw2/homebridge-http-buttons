@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "HTTP-BUTTON",
   "pluginType": "platform",
   "singular": true,
   "schema": {
