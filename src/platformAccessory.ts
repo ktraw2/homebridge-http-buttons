@@ -30,6 +30,17 @@ export class ExamplePlatformAccessory {
       .setCharacteristic(this.platform.Characteristic.Model, 'Default-Model')
       .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Default-Serial');
 
+    // create a new Stateless Programmable Switch service
+    this.service = this.accessory.getService(this.platform.Service.StatelessProgrammableSwitch) || this.accessory.addService(this.platform.Service.StatelessProgrammableSwitch);
+
+    this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
+
+    // create handlers for required characteristics
+    this.service.getCharacteristic(this.platform.Characteristic.ProgrammableSwitchEvent)
+      .onGet(this.handleProgrammableSwitchEventGet.bind(this));
+
+
+    /*
     // get the LightBulb service if it exists, otherwise create a new LightBulb service
     // you can create multiple services for each accessory
     this.service = this.accessory.getService(this.platform.Service.Lightbulb) || this.accessory.addService(this.platform.Service.Lightbulb);
@@ -62,6 +73,7 @@ export class ExamplePlatformAccessory {
      */
 
     // Example: add two "motion sensor" services to the accessory
+    /*
     const motionSensorOneService = this.accessory.getService('Motion Sensor One Name') ||
       this.accessory.addService(this.platform.Service.MotionSensor, 'Motion Sensor One Name', 'YourUniqueIdentifier-1');
 
@@ -77,6 +89,7 @@ export class ExamplePlatformAccessory {
      * the `updateCharacteristic` method.
      *
      */
+    /*
     let motionDetected = false;
     setInterval(() => {
       // EXAMPLE - inverse the trigger
@@ -88,7 +101,7 @@ export class ExamplePlatformAccessory {
 
       this.platform.log.debug('Triggering motionSensorOneService:', motionDetected);
       this.platform.log.debug('Triggering motionSensorTwoService:', !motionDetected);
-    }, 10000);
+    }, 10000);*/
   }
 
   /**
@@ -136,6 +149,18 @@ export class ExamplePlatformAccessory {
     this.exampleStates.Brightness = value as number;
 
     this.platform.log.debug('Set Characteristic Brightness -> ', value);
+  }
+    
+  /**
+   * Handle requests to get the current value of the "Programmable Switch Event" characteristic
+   */
+  handleProgrammableSwitchEventGet() {
+    this.platform.log.debug('Triggered GET ProgrammableSwitchEvent');
+
+    // set this to a valid value for ProgrammableSwitchEvent
+    const currentValue = this.platform.Characteristic.ProgrammableSwitchEvent.SINGLE_PRESS;
+
+    return currentValue;
   }
 
 }
